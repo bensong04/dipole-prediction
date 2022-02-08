@@ -1,5 +1,5 @@
 # standard imports
-import os.path
+import os
 import numpy as np
 import pandas as pd
 from os.path import join
@@ -31,7 +31,8 @@ UNRECOGNIZED = tuple([torch.zeros(1, 1, 1, 1),-1,-1]) # "Feature" element of the
 
 # download dataset
 TARGET_PATH = join(os.path.dirname(os.path.realpath(__file__)), "datasets/")
-da.download_dataset('lba', TARGET_PATH)
+if not os.listdir(TARGET_PATH):
+    da.download_dataset('lba', TARGET_PATH)
 
 def calculate_padding(tup, max_size):
     assert len(tup) == len(max_size)
@@ -160,5 +161,3 @@ if __name__== "__main__":
         print('feature shape:', item[0][0].shape)
         print('label:', item[0][1])
         break
-
-
