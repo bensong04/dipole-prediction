@@ -2,7 +2,7 @@
 import os
 import numpy as np
 import pandas as pd
-from os.path import join
+from os.path import join, exists
 
 # pytorch imports
 import torch
@@ -31,7 +31,10 @@ UNRECOGNIZED = tuple([torch.zeros(1, 1, 1, 1),-1,-1]) # "Feature" element of the
 
 # download dataset
 TARGET_PATH = join(os.path.dirname(os.path.realpath(__file__)), "datasets/")
-if not os.listdir(TARGET_PATH):
+if exists(TARGET_PATH):
+    if not os.listdir(TARGET_PATH):
+        da.download_dataset('lba', TARGET_PATH)
+else:
     da.download_dataset('lba', TARGET_PATH)
 
 def calculate_padding(tup, max_size):
