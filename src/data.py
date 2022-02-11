@@ -29,14 +29,6 @@ CHLORINE = Element('Cl', 100, 3.16)
 # constants
 UNRECOGNIZED = tuple([torch.zeros(1, 1, 1, 1),-1,-1]) # "Feature" element of the tensor should be a 4D tensor stuffed with 0s
 
-# download dataset
-TARGET_PATH = join(os.path.dirname(os.path.realpath(__file__)), "datasets/")
-if exists(TARGET_PATH):
-    if not os.listdir(TARGET_PATH):
-        da.download_dataset('lba', TARGET_PATH)
-else:
-    da.download_dataset('lba', TARGET_PATH)
-
 def calculate_padding(tup, max_size):
     assert len(tup) == len(max_size)
     print(tup)
@@ -154,7 +146,8 @@ class DipoleDataTransform:
         return transformed
         
 if __name__== "__main__":
-    dataset_path = join(os.path.dirname(os.path.realpath(__file__)), "datasets/smp-random/data/test")
+    path = os.getcwd()
+    dataset_path = join(os.path.abspath(os.path.join(path, os.pardir)), "datasets/smp-random/data/test") # If this doesn't work, replace "os.path.abspath..." with "path"
     dataset = LMDBDataset(dataset_path, transform=DipoleDataTransform())
     dataloader = DataLoader(dataset, batch_size=8, shuffle=False, collate_fn=collate_fn)
 
